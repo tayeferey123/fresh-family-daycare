@@ -29,39 +29,78 @@ const siteData = {
     "Safe, clean, nurturing environment for infants and toddlers",
     "Focused attention, open communication, and family-centered care",
   ],
+  activities: [
+    "Water Activities",
+    "Story Circle",
+    "Group Puzzle Solving",
+    "Ball Games",
+    "Coloring",
+    "Handwriting Practice",
+    "Arts and Crafts",
+    "Independent Play Time",
+    "Playground Visits",
+    "Dancing",
+    "Pronunciation Practice",
+    "Independent Reading Time",
+    "Hide and Seek",
+    "Tag",
+    "And so much more!",
+  ],
+  caregiverBio:
+    "Fereselam Taye brings 12 years of professional childcare experience and is a devoted mother of two, Blen (21) and Leul (20), who are both currently in university. Blen is pursuing the path to medical school to become an MD, and Leul is studying engineering full time while also working as a certified \"CPR and First Aid for Adults, Children, and Infants\" instructor and a trusted substitute helper for the daycare.",
   reviews: [
     {
       id: 1,
-      title: "Review Screenshot 1",
-      image:
-        "https://placehold.co/1200x800/png?text=Google+Review+Screenshot+1",
+      title: "Google review from Emilie Buckley",
+      image: "/reviews/google-review-emilie-buckley.png",
+      width: 1404,
+      height: 952,
     },
     {
       id: 2,
-      title: "Review Screenshot 2",
-      image:
-        "https://placehold.co/1200x800/png?text=Google+Review+Screenshot+2",
+      title: "Google review from Kyle Rees",
+      image: "/reviews/google-review-kyle-rees.png",
+      width: 1404,
+      height: 534,
     },
     {
       id: 3,
       title: "Review Screenshot 3",
       image:
         "https://placehold.co/1200x800/png?text=Google+Review+Screenshot+3",
+      width: 1200,
+      height: 800,
     },
     {
       id: 4,
       title: "Review Screenshot 4",
       image:
         "https://placehold.co/1200x800/png?text=Google+Review+Screenshot+4",
+      width: 1200,
+      height: 800,
     },
     {
       id: 5,
       title: "Review Screenshot 5",
       image:
         "https://placehold.co/1200x800/png?text=Google+Review+Screenshot+5",
+      width: 1200,
+      height: 800,
     },
   ],
 };
+
+const bubbleStream = Array.from({ length: 22 }, (_, index) => ({
+  id: index,
+  left: `${2 + (index * 96) / 21}%`,
+  size: 77 + (index % 6) * 29,
+  duration: 18 + (index % 7) * 3,
+  delay: (index % 8) * 0.85,
+  drift: -42 + (index % 9) * 12,
+  opacity: 0.48 + (index % 4) * 0.1,
+  scale: 0.78 + (index % 5) * 0.08,
+  swayDuration: 5 + (index % 4) * 1.5,
+}));
 
 function NavLink({
   href,
@@ -175,7 +214,13 @@ function ReviewCard({
   review,
   scale,
 }: {
-  review: { id: number; title: string; image: string };
+  review: {
+    id: number;
+    title: string;
+    image: string;
+    width: number;
+    height: number;
+  };
   scale: number;
 }) {
   return (
@@ -193,14 +238,19 @@ function ReviewCard({
             <span className="text-sm font-bold">Parent Review</span>
           </div>
           <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-            Screenshot
+            5-Stars
           </span>
         </div>
-        <img
-          src={review.image}
-          alt={review.title}
-          className="h-[340px] w-full object-cover sm:h-[420px]"
-        />
+        <div className="bg-slate-50 p-3 sm:p-4">
+          <img
+            src={review.image}
+            alt={review.title}
+            width={review.width}
+            height={review.height}
+            loading="lazy"
+            className="h-auto w-full rounded-[1.5rem] border border-slate-200 bg-white object-contain"
+          />
+        </div>
       </div>
     </div>
   );
@@ -242,25 +292,38 @@ export default function Page() {
     };
   }, []);
 
-  const floatingDecor = Array.from({ length: 18 }, (_, i) => ({
-    id: i,
-    left: `${(i * 5.3) % 95}%`,
-    top: `${(i * 13.7) % 100}%`,
-    size: 10 + (i % 4) * 7,
-    color: [
-      "bg-pink-400",
-      "bg-yellow-400",
-      "bg-sky-400",
-      "bg-green-400",
-      "bg-orange-400",
-      "bg-purple-400",
-      "bg-rose-400",
-      "bg-cyan-400",
-    ][i % 8],
-  }));
-
   return (
-    <div className="min-h-screen bg-white text-slate-800">
+    <div className="relative isolate min-h-screen overflow-x-hidden bg-white text-slate-800">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 z-[1] overflow-hidden"
+      >
+        {bubbleStream.map((bubble) => (
+          <div
+            key={bubble.id}
+            className="bubble-stream-item absolute bottom-[-8rem]"
+            style={
+              {
+                left: bubble.left,
+                width: `${bubble.size}px`,
+                height: `${bubble.size}px`,
+                animationDuration: `${bubble.duration}s`,
+                animationDelay: `${bubble.delay}s`,
+                "--bubble-drift": `${bubble.drift}px`,
+                "--bubble-opacity": bubble.opacity,
+                "--bubble-scale": bubble.scale,
+                "--bubble-sway-duration": `${bubble.swayDuration}s`,
+              } as React.CSSProperties
+            }
+          >
+            <div
+              className="bubble-stream-sway h-full w-full bg-contain bg-center bg-no-repeat"
+              style={{ backgroundImage: "url('/decor/bubble-transparent.png')" }}
+            />
+          </div>
+        ))}
+      </div>
+
       <header className="sticky top-0 z-50 border-b border-slate-100 bg-white/90 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
           <a href="#home" className="flex items-center gap-3">
@@ -291,23 +354,8 @@ export default function Page() {
         </div>
       </header>
 
-      <main>
+      <main className="relative z-10">
         <section id="home" className="relative overflow-hidden">
-          <div className="absolute inset-0">
-            {floatingDecor.map((dot) => (
-              <span
-                key={dot.id}
-                className={`absolute rounded-full ${dot.color} opacity-70 blur-[1px]`}
-                style={{
-                  left: dot.left,
-                  top: dot.top,
-                  width: dot.size,
-                  height: dot.size,
-                }}
-              />
-            ))}
-          </div>
-
           <div className="mx-auto grid max-w-7xl items-center gap-14 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:px-8 lg:py-24">
             <div className="relative z-10">
               <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-pink-100 px-4 py-2 text-sm font-bold text-pink-600 shadow-sm">
@@ -441,13 +489,13 @@ export default function Page() {
           </div>
         </section>
 
-        <section id="about" className="bg-white py-20 sm:py-24">
+        <section id="about" className="py-20 sm:py-24">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <SectionTitle
               emoji="🌈"
               eyebrow="About Us"
               title="A cheerful place where little ones feel safe, loved, and excited to learn"
-              subtitle={`Fresh Family Daycare is designed to feel bright, welcoming, and personal, with care led by ${siteData.primaryCaretaker}. This section can be customized with your real story, teaching style, schedule, certifications, and daily routine.`}
+              subtitle={`Fresh Family Daycare is designed to feel bright, welcoming, and personal, with care led by ${siteData.primaryCaretaker}.`}
             />
 
             <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
@@ -461,6 +509,9 @@ export default function Page() {
                     colorful learning, and personal attention. Children get a
                     safe and loving environment while parents get clear
                     communication and peace of mind.
+                  </p>
+                  <p className="mt-4 text-base leading-7 text-slate-600">
+                    {siteData.caregiverBio}
                   </p>
 
                   <div className="mt-8 grid gap-4 sm:grid-cols-2">
@@ -486,16 +537,27 @@ export default function Page() {
                   <div className="p-8">
                     <div className="mb-4 flex items-center gap-3">
                       <div className="rounded-2xl bg-white p-3 text-xl shadow-sm">
-                        ⏰
+                        🎨
                       </div>
                       <h3 className="text-xl font-extrabold text-slate-800">
-                        Daily rhythm
+                        Activities Include (but aren&apos;t limited to)
                       </h3>
                     </div>
-                    <p className="text-base leading-7 text-slate-600">
-                      Add your daily schedule here, such as morning drop-off,
-                      circle time, meals, nap time, outdoor play, and pickup.
-                    </p>
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      {siteData.activities.map((activity) => (
+                        <div
+                          key={activity}
+                          className="flex items-start gap-3 rounded-[1.25rem] bg-white/85 p-4 shadow-sm"
+                        >
+                          <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-green-100 text-sm text-green-600">
+                            ✓
+                          </div>
+                          <p className="text-sm font-medium leading-6 text-slate-700">
+                            {activity}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
@@ -506,7 +568,7 @@ export default function Page() {
                         👩‍👧
                       </div>
                       <p className="font-semibold text-slate-700">
-                        Primary Caretaker: {siteData.primaryCaretaker}
+                        {siteData.primaryCaretaker}
                       </p>
                     </div>
                     <div className="flex items-center gap-3">
@@ -542,14 +604,14 @@ export default function Page() {
 
         <section
           id="availability"
-          className="bg-gradient-to-b from-white to-emerald-50 py-20 sm:py-24"
+          className="bg-gradient-to-b from-white/72 to-emerald-50/82 py-20 backdrop-blur-[1px] sm:py-24"
         >
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <SectionTitle
               emoji="👶"
               eyebrow="Current Availability"
               title="See open spots for infants and toddlers"
-              subtitle="This section is built so you can update your current openings as they change. Edit the values at the top of the file to keep the website current."
+              subtitle=""
             />
 
             <div className="grid gap-8 lg:grid-cols-2">
@@ -576,13 +638,13 @@ export default function Page() {
           </div>
         </section>
 
-        <section id="reviews" className="bg-white py-20 sm:py-24">
+        <section id="reviews" className="py-20 sm:py-24">
           <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
             <SectionTitle
               emoji="⭐"
               eyebrow="Reviews"
-              title="Parent reviews that grow as they reach the center of the screen"
-              subtitle="Replace these placeholder images with your Google review screenshots. The card closest to the center of the screen grows larger while the others shrink."
+              title="What parents had to say about Fresh Daycare!"
+              subtitle="Real Customer Reviews from Google!"
             />
 
             <div className="mx-auto flex max-w-3xl flex-col gap-10">
@@ -601,7 +663,7 @@ export default function Page() {
         </section>
       </main>
 
-      <footer className="border-t border-slate-100 bg-white">
+      <footer className="relative z-10 border-t border-slate-100">
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-8 text-center sm:px-6 lg:px-8">
           <div className="flex justify-center gap-2">
             <span className="h-3 w-3 rounded-full bg-pink-400" />
@@ -620,6 +682,54 @@ export default function Page() {
           </p>
         </div>
       </footer>
+
+      <style jsx global>{`
+        .bubble-stream-item {
+          animation-name: bubble-rise;
+          animation-timing-function: linear;
+          animation-iteration-count: infinite;
+          opacity: 0;
+          filter: drop-shadow(0 0 18px rgba(255, 255, 255, 0.45));
+          will-change: transform, opacity;
+        }
+
+        .bubble-stream-sway {
+          animation: bubble-sway var(--bubble-sway-duration) ease-in-out infinite alternate;
+          opacity: var(--bubble-opacity);
+          filter: saturate(1.15) brightness(1.08);
+        }
+
+        @keyframes bubble-rise {
+          0% {
+            transform: translate3d(0, 0, 0) scale(var(--bubble-scale));
+            opacity: 0;
+          }
+
+          12% {
+            opacity: var(--bubble-opacity);
+          }
+
+          88% {
+            opacity: var(--bubble-opacity);
+          }
+
+          100% {
+            transform: translate3d(var(--bubble-drift), -125vh, 0)
+              scale(calc(var(--bubble-scale) * 1.08));
+            opacity: 0;
+          }
+        }
+
+        @keyframes bubble-sway {
+          0% {
+            transform: translateX(-18px) rotate(-7deg);
+          }
+
+          100% {
+            transform: translateX(18px) rotate(7deg);
+          }
+        }
+      `}</style>
     </div>
   );
 }
