@@ -14,8 +14,8 @@ const siteData = {
   subText:
     "Warm family care, colorful days, and age-appropriate activities for infants and toddlers.",
   infantAvailability: {
-    openSpots: 0,
-    nextAvailability: "1 Spot, September 2026",
+    openSpots: 1,
+    nextAvailability: "Now enrolling",
     ageRange: "Under 2 years old",
   },
   toddlerAvailability: {
@@ -65,27 +65,24 @@ const siteData = {
     },
     {
       id: 3,
-      title: "Review Screenshot 3",
-      image:
-        "https://placehold.co/1200x800/png?text=Google+Review+Screenshot+3",
-      width: 1200,
-      height: 800,
+      title: "Google review from Corinne Stephens",
+      image: "/reviews/google-review-corinne-stephens.jpg",
+      width: 1290,
+      height: 1265,
     },
     {
       id: 4,
-      title: "Review Screenshot 4",
-      image:
-        "https://placehold.co/1200x800/png?text=Google+Review+Screenshot+4",
-      width: 1200,
-      height: 800,
+      title: "Google review from Deanna Portero",
+      image: "/reviews/google-review-deanna-portero.jpg",
+      width: 1290,
+      height: 1036,
     },
     {
       id: 5,
-      title: "Review Screenshot 5",
-      image:
-        "https://placehold.co/1200x800/png?text=Google+Review+Screenshot+5",
-      width: 1200,
-      height: 800,
+      title: "Google review from Kristen Kowalew",
+      image: "/reviews/google-review-kristen-kowalew.jpg",
+      width: 1290,
+      height: 1303,
     },
   ],
 };
